@@ -1,0 +1,23 @@
+#!/bin/bash
+
+selfPath(){
+  DIR=$( cd "$( dirname "$0" )/" && pwd)
+  echo $DIR
+}
+
+fwpath=$(selfPath)
+docker=$(which docker|grep "/"|head -n 1)
+imagename="afas-docker:1.0.0"
+
+echo "Generating Docker IMAGE"
+echo "  > Docker:  $docker"
+echo "  > Image :  $imagename"
+echo ""
+
+if [[ "$(echo -n $docker)" == "" ]];
+then
+    echo "Docker not installed!"
+    echo ""
+else
+    docker build -t "$imagename" -f "$fwpath/Dockerfile" "$fwpath"
+fi

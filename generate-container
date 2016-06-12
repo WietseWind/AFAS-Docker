@@ -1,0 +1,43 @@
+#!/bin/bash
+
+selfPath(){
+  DIR=$( cd "$( dirname "$0" )/../" && pwd)
+  echo $DIR
+}
+
+fwpath=$(selfPath)
+docker=$(which docker|grep "/"|head -n 1)
+imagename="afas-docker:1.0.0"
+project="fileupload"
+
+echo "Generating Docker Container"
+echo "  > Docker  :  $docker"
+echo "  > Image   :  $imagename"
+echo "  > Project :  $project"
+echo ""
+
+if [[ "$(echo -n $docker)" == "" ]];
+then
+    echo "Docker not installed!"
+    echo ""
+else
+    docker run \
+        -m 512m \
+        --restart always \
+        -dit --cpu-shares 100 \
+        --name "$project" \
+        -p 80 \
+        "$imagename" \
+        && echo " ... Docker Container [ $imagename ] Created" \
+        || echo " ... Docker Container [ $imagename ] Exists"
+
+    # Mount a path: between the lines with -p 80 and "$imagename", use:
+    #        -v {local path}:{remote path / file} \
+
+    echo ""
+    docker ps
+fi
+
+echo ""
+echo "Done :) Bye!"
+echo ""
