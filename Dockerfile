@@ -55,7 +55,7 @@ RUN cd /tmp && wget http://pear.php.net/go-pear.phar && \
     echo "extension=mongodb.so" > /etc/php/7.0/apache2/conf.d/20-mongo.ini
 
 # Apache config
-RUN a2enmod headers rewrite && \
+RUN a2enmod headers rewrite remoteip && \
     rm -r /var/www/html && \
     echo '<FilesMatch "\.(txt|md|ini|sql|log|md)$">' >> /etc/apache2/mods-available/php7.0.conf && \
     echo '  Deny from all' >> /etc/apache2/mods-available/php7.0.conf && \
@@ -70,7 +70,9 @@ RUN a2enmod headers rewrite && \
     echo 'interned_strings_buffer=4' >> /etc/php/7.0/mods-available/opcache.ini && \
     echo 'opcache.enable=1' >> /etc/php/7.0/mods-available/opcache.ini && \
     sed -i "s/^ServerTokens.\+/ServerTokens Prod/g" /etc/apache2/conf-enabled/security.conf && \
-    sed -i "s/^ServerSignature.\+/ServerSignature Off/g" /etc/apache2/conf-enabled/security.conf
+    sed -i "s/^ServerSignature.\+/ServerSignature Off/g" /etc/apache2/conf-enabled/security.conf && \
+    sed -i 's/^LogFormat "%h /LogFormat "%a /g' /etc/apache2/apache2.conf && \
+    sed -i "s/Use mod_remoteip instead\(.\+\)/Use mod_remoteip instead\1\nRemoteIPHeader X-Forwarded-For/g" /etc/apache2/apache2.conf
 
 # PHP Config
 RUN sed -i "s/session\.cache_expire.*/session.cache_expire = 18000000/g" /etc/php/7.0/apache2/php.ini && \
