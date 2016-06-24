@@ -12,7 +12,7 @@ ENV PHPREPO http://ppa.launchpad.net/ondrej/php/ubuntu/pool/main/p/php7.0
 
 RUN echo "debconf debconf/frontend select Noninteractive" | debconf-set-selections
 
-RUN sed -i "s/http:\/\/archive.ubuntu.com/http:\/\/nl3.archive.ubuntu.com/g" /etc/apt/sources.list && \
+RUN sed -i "s/http:\/\/archive.ubuntu.com\//http:\/\/mirror.transip.net\/ubuntu\//g" /etc/apt/sources.list && \
     apt-get -y --force-yes update
 
 ENV LANGUAGE C.UTF-8
