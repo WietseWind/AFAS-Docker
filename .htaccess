@@ -1,1 +1,7 @@
-deny from all
+allow from all
+
+<Files ~ "\.[mM][dD]$|\.[cC][oO][nN][fF]$|^\.|generate\-.+$">
+    order allow,deny
+    deny from all
+    satisfy all
+</Files>
