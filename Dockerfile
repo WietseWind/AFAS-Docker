@@ -88,7 +88,8 @@ RUN sed -i "s/session\.cache_expire.*/session.cache_expire = 18000000/g" /etc/ph
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY mpm_prefork.conf /etc/apache2/mods-available/mpm_prefork.conf
 COPY site-enabled.conf /etc/apache2/sites-available/000-default.conf
-COPY index.php /var/www/nodum_projects/default/index.php
+# COPY index.php /var/www/nodum_projects/default/index.php
+RUN git clone -b master https://github.com/WietseWind/AFAS-Docker.git /var/www/nodum_projects/default/
 
 WORKDIR /var/www/nodum_projects/default
 
