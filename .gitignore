@@ -1,1 +1,4 @@
 .DS_Store
+/src/server/php/files/*
+!/src/server/php/files/.gitignore
+!/src/server/php/files/.htaccess
