@@ -11,7 +11,11 @@ RUN echo "debconf debconf/frontend select Noninteractive" | debconf-set-selectio
 RUN export LANGUAGE=C.UTF-8; export LANG=C.UTF-8; export LC_ALL=C.UTF-8; locale-gen C.UTF-8; DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales; echo "Europe/Amsterdam" > /etc/timezone; dpkg-reconfigure -f noninteractive tzdata
 
 RUN apt-get -y --force-yes update && apt-get -y --force-yes upgrade
-RUN git clone -b master https://github.com/WietseWind/AFAS-Docker.git /var/www/nodum_projects/default/
+
+ADD src /var/www/nodum_projects/default
+
+RUN chmod 777 /var/www/nodum_projects/default/server/php/files && \
+    chown www-data:www-data /var/www/nodum_projects/default/server/php/files
 
 WORKDIR /var/www/nodum_projects/default
 
