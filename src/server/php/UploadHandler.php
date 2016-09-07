@@ -47,7 +47,7 @@ class UploadHandler {
         $this->options = array(
             'script_url' => $this->get_full_url().'/',
             'upload_dir' => dirname($this->get_server_var('SCRIPT_FILENAME')).'/files/',
-            'upload_url' => $this->get_full_url(false).'/files/',
+            'upload_url' => $this->get_full_url().'/files/',
             'user_dirs' => true,
             'sessionprefix' => '',
             'mkdir_mode' => 0755,
@@ -166,6 +166,9 @@ class UploadHandler {
     }
 
     protected function getToken(){
+        // Skip this. @WRW
+        return '';
+
         $L_s_return = 'none';
         if(isset($_SERVER['REQUEST_URI'])){
             if(preg_match("@/token:([^/]+)@", $_SERVER['REQUEST_URI'], $m)){
@@ -201,7 +204,7 @@ class UploadHandler {
         }
     }
 
-    protected function get_full_url($withToken = true) {
+    protected function get_full_url($withToken = false) {
         $https = !empty($_SERVER['HTTPS']) && strcasecmp($_SERVER['HTTPS'], 'on') === 0 ||
             !empty($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
                 strcasecmp($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') === 0;
@@ -335,7 +338,7 @@ class UploadHandler {
         return null;
     }
 
-    protected function get_file_objects($iteration_method = 'get_file_object') {
+    public function get_file_objects($iteration_method = 'get_file_object') {
         // WRW fix /////////////////////////////////////////////////////////////////
         // return array();
         ////////////////////////////////////////////////////////////////////////////
@@ -1064,7 +1067,12 @@ class UploadHandler {
             $this->handle_form_data($file, $index);
             $upload_dir = $this->get_upload_path();
             if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, $this->options['mkdir_mode'], true);
+                @mkdir($upload_dir, $this->options['mkdir_mode'], true);
+                if(isset($_SESSION['__UPLOADTOKEN__'])){
+                    $uploadTokenFile = $upload_dir.DIRECTORY_SEPARATOR.'.uploadtoken';
+                    @file_put_contents($uploadTokenFile, $_SESSION['__UPLOADTOKEN__']);
+                    @chmod($uploadTokenFile, $this->options['mkdir_mode']);
+                }
             }
             $file_path = $this->get_upload_path($file->name);
             $append_file = $content_range && is_file($file_path) &&

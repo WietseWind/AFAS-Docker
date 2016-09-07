@@ -16,7 +16,7 @@ $(function () {
 
     var dropzoneTimeout,Browser;
     var progressCleared = 0,
-        $backendUrl     = 'server/php/index.php/token:' + $SupportIdent + '/';
+        $backendUrl     = 'server/php/index.php/token:' + $token + '/';
 
     $(window).load(function(){
         Browser = new WhichBrowser();
@@ -25,7 +25,7 @@ $(function () {
         }
     });
 
-    $('#fileupload').fileupload({
+    var $_fu = $('#fileupload').fileupload({
         // Uncomment the following to send cross-domain cookies:
         // xhrFields: {withCredentials: true},
 
@@ -54,6 +54,7 @@ $(function () {
          },
          drop : function(e){
             $("#overlay-dropper").removeClass('goAnimate');
+            $("#doneUploading").removeClass('visible').hide()
             return;
          },
          submit : function(e, data){
@@ -70,6 +71,10 @@ $(function () {
             }
             return;
          },
+         destroyed: function(e, data){
+            countFilesActivateButton(false)
+
+         },
          send : function(e, data){
             return;
          },
@@ -79,6 +84,7 @@ $(function () {
                     $("#progress-footer").addClass('hide');
                     $("body").removeClass('isuploading');
                     doneUploading();
+                    countFilesActivateButton(true)
                     progressCleared++;
                 }
             }, 100);
@@ -136,14 +142,32 @@ $(function () {
         $(this).removeClass('fileupload-processing');
     }).done(function (result) {
         $(this).fileupload('option', 'done').call(this, $.Event('done'), {result: result});
+        countFilesActivateButton(true)
     });
 
 });
 
+var countFilesActivateButton = function(fade){
+    var rfl = $('p.name').length
+    $("#doneUploading b.numfiles").text(rfl)
+    if(rfl > 0){
+        setTimeout(function(){
+            $("#doneUploading").addClass('visible');
+            if(typeof fade !== 'undefined' && fade){
+                $("#doneUploading").hide().fadeIn('fast')
+            }
+        }, 500);
+    }else{
+        if(typeof fade !== 'undefined' && fade){
+            $("#doneUploading").removeClass('visible')
+        }else{
+            $("#doneUploading").fadeOut('fast', function(){ $(this).removeClass('visible') });
+        }
+    }
+}
+
 function isUploading(){
-    // window.parent.postMessage('isUploading', 'https://ipub.afas.nl');
 }
 
 function doneUploading(){
-    // window.parent.postMessage('doneUploading', 'https://ipub.afas.nl');
 }

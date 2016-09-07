@@ -1,3 +1,15 @@
 .btn, div.progress {
   border-radius: 0;
 }
+
+#doneUploading {
+    z-index: -1;
+    height: 60px;
+    text-align: right;
+    padding: 9px;
+    display: none;
+}
+
+#doneUploading.visible {
+    display: block;
+}

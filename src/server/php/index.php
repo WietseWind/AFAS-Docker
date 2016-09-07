@@ -27,4 +27,37 @@ error_reporting(E_ALL | E_STRICT);
 
 require('UploadHandler.php');
 
-$upload_handler = new UploadHandler();
+if(isset($_GET["done"]) && isset($_POST['uploadtoken'])){
+    $upload_handler = new UploadHandler(null, false);
+    if(isset($_SESSION['__UPLOADTOKEN__']) && $_POST['uploadtoken'] == $_SESSION['__UPLOADTOKEN__']){
+        $files = [];
+        try {
+            $files = array_map(function($a){
+                return ['name'=>$a->name,'size'=>$a->size,'url'=>$a->url];
+            }, $upload_handler->get_file_objects());
+        }
+        catch (\Exception $e){
+        }
+        if(!empty($files)){
+            $L_a_payload  = [ 'files' => $files, 'ssid' => session_id(), 'session' => $_SESSION ];
+            $L_m_result   = @file_get_contents('https://afas-upload.nodum.io/json/callback', false, stream_context_create([ 'http' => [ 'method' => 'POST', 'header'  => 'Content-type: application/x-www-form-urlencoded', 'content' => http_build_query($L_a_payload) ] ]));
+            $L_a_result   = @json_decode($L_m_result);
+            if(isset($http_response_header[0]) && preg_match("@200 OK@", $http_response_header[0]) && $L_a_result && isset($L_a_result->location)){
+                // echo "OK";
+                @session_regenerate_id(true);
+                header('Location: ' . $L_a_result->location);
+            }else{
+                // Todo: Error handling, Empty/Exception?
+                header('Location: ../../?redirCause=CALLBACK_ERROR');
+            }
+        }else{
+            // Todo: Error handling, Empty/Exception?
+            header('Location: ../../?redirCause=EMPTY_OR_EXCEPTION');
+        }
+    }else{
+        // Todo: Error handling, Security?
+        header('Location: ../../?redirCause=SECURITY_VIOLATION');
+    }
+}else{
+    $upload_handler = new UploadHandler();
+}

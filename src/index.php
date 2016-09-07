@@ -1,4 +1,19 @@
-<!DOCTYPE HTML>
+<?php
+
+    if(isset($_GET["token"]) && preg_match("@^[a-zA-Z0-9]{40}@", $_GET["token"])){
+        define('__UPLOADTOKEN__', $_GET["token"]);
+    }
+
+    $base = '';
+    if(isset($_SERVER["HTTP_HOST"])){
+        $base = (isset($_SERVER["SCRIPT_NAME"]) ? preg_replace("@".(isset($_SERVER["HTTP_X_STRIP_PATH"]) ? addslashes($_SERVER["HTTP_X_STRIP_PATH"]) : '\.+')."@", "", substr($_SERVER["SCRIPT_NAME"], 0, -strlen(strrchr($_SERVER["SCRIPT_NAME"], "/"))+1)) : '/');
+    }
+
+    if(isset($_GET["redirCause"]) && preg_match("@^[A-Z_]+$@", $_GET["redirCause"])){
+        define('__REDIRCAUSE__', $_GET["redirCause"]);
+    }
+
+?><!DOCTYPE HTML>
 <html lang="en">
 <head>
     <!-- Force latest IE rendering engine or ChromeFrame if installed -->
@@ -12,9 +27,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/ipub-included.css">
     <script>
-        var $SupportForm             = 0,
-            $SupportIdent            = "",
-            $iPubIntegrationLocation = "";
+        var $token = "<?php echo __UPLOADTOKEN__; ?>";
     </script>
 
     <link rel="stylesheet" href="css/style-ipub.css">
@@ -50,9 +63,10 @@
                 }
                 @unlink($pidfile);
             }
+            if(defined('__UPLOADTOKEN__')) $_SESSION['__UPLOADTOKEN__'] = __UPLOADTOKEN__;
         }
 
-        if(defined('__VALID__')){
+        if(defined('__VALID__') && defined('__UPLOADTOKEN__')){
 
     ?>
         <div id="overlay-dropper">
@@ -102,6 +116,12 @@
                     </div>
                 </div>
             </form>
+            <div class="navbar navbar-fixed-bottom" id="doneUploading">
+                <form method="post" action="<?php $base; ?>server/php/index.php?done=true">
+                    <input type="hidden" name="uploadtoken" value="<?php echo __UPLOADTOKEN__; ?>" />
+                    <button type="submit" class="btn btn-large btn-success"><span class="glyphicon glyphicon-ok"></span> Uploaden voltooien. <b><b class="numfiles">0</b> bestand(en) aanleveren aan AFAS</b></button>
+                </form>
+            </div>
         </div>
 
         <!-- The template to display files available for upload -->
@@ -181,9 +201,13 @@
     <?php
 
         }else{
-
-            @include(dirname(__FILE__).DIRECTORY_SEPARATOR.'maintenance.html');
-
+            if(defined('__REDIRCAUSE__')){
+                echo @str_ireplace("{{ error }}", __REDIRCAUSE__, @file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'error.html'));
+            }elseif(!defined('__UPLOADTOKEN__')){
+                echo @file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'notoken.html');
+            }else{
+                echo @file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'maintenance.html');
+            }
         }
 
     ?>
@@ -208,7 +232,6 @@
         <!--[if (gte IE 8)&(lt IE 10)]>
         <script src="js/cors/jquery.xdr-transport.js"></script>
         <![endif]-->
-        <script src="js/ipub-included.js"></script>
     <?php
         }
     ?>
