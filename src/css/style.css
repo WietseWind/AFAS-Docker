@@ -32,6 +32,7 @@ body.isuploading {
     margin-right: 0px;
     padding-left: 0px;
     padding-right: 0px;
+    margin-bottom: 60px;
 }
 
 .overlay, .dropper {
@@ -272,3 +273,10 @@ body.isuploading .fileupload-buttonbar { height:40px; overflow:hidden; }
 table.table {margin-top: -1px; }
 table p { margin:0px; }
 table tr td span.size { line-height:40px; }
+
+
+#doneUploading {
+    z-index: 999 !important;
+    background-color: rgba(255,255,255,.85);
+    border-top: 1px solid #ccc;
+}
