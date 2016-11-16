@@ -22,4 +22,4 @@ Docker Sample for AFAS (usage: file-upload environment)
 
 ## Uploads
 
-Uploads are saved in `/var/www/nodum_projects/default/server/php/files`. In this folder, a folder is created for each PHP Sessio ID. Uploaded files are placed in this folder. When images are uploaded, a subfolder for the thumbnails (generated using PHP GD) will be created.
+Uploads are saved in `/var/www/nodum_projects/default/server/php/files`. In this folder, a folder is created for each PHP Session ID. Uploaded files are placed in this folder. When images are uploaded, a subfolder for the thumbnails (generated using PHP GD) will be created.
