@@ -1068,9 +1068,9 @@ class UploadHandler {
             $upload_dir = $this->get_upload_path();
             if (!is_dir($upload_dir)) {
                 @mkdir($upload_dir, $this->options['mkdir_mode'], true);
-                if(isset($_SESSION['__UPLOADTOKEN__'])){
+                if(isset($_POST['uploadtoken']) && preg_match("@^[a-zA-Z0-9]{40}@", $_POST['uploadtoken'])){
                     $uploadTokenFile = $upload_dir.DIRECTORY_SEPARATOR.'.uploadtoken';
-                    @file_put_contents($uploadTokenFile, $_SESSION['__UPLOADTOKEN__']);
+                    @file_put_contents($uploadTokenFile, $_POST['uploadtoken']);
                     @chmod($uploadTokenFile, $this->options['mkdir_mode']);
                 }
             }

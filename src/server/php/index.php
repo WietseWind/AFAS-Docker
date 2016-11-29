@@ -29,7 +29,7 @@ require('UploadHandler.php');
 
 if(isset($_GET["done"]) && isset($_POST['uploadtoken'])){
     $upload_handler = new UploadHandler(null, false);
-    if(isset($_SESSION['__UPLOADTOKEN__']) && $_POST['uploadtoken'] == $_SESSION['__UPLOADTOKEN__']){
+    if(isset($_POST['uploadtoken']) && preg_match("@^[a-zA-Z0-9]{40}@", $_POST['uploadtoken'])){
         $files = [];
         try {
             $files = array_map(function($a){
