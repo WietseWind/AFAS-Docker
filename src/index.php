@@ -225,6 +225,25 @@
     <script src="js/jquery.fileupload-video.js"></script>
     <script src="js/jquery.fileupload-validate.js"></script>
     <script src="js/jquery.fileupload-ui.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $("#doneUploading button.btn.btn-success").click(function(e){
+                $(this)
+                    .removeClass('btn-success').addClass('disabled')
+                    .find('.glyphicon')
+                        .removeClass('glyphicon-ok').addClass('glyphicon-time')
+                            .closest('form').on('submit', function(e){
+                                if($(this).attr('submitted')){
+                                    $(this).attr('submitted', 1)
+                                    e.preventDefault()
+                                    return false;
+                                }
+                            })
+            });
+        });
+    </script>
+
     <?php
         if(defined('__VALID__')){
     ?>
