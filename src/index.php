@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/ipub-included.css">
     <script>
-        var $token = "<?php echo __UPLOADTOKEN__; ?>";
+        var $token = "<?php echo (defined('__UPLOADTOKEN__') ? __UPLOADTOKEN__ : ''); ?>";
     </script>
 
     <link rel="stylesheet" href="css/style-ipub.css">

@@ -152,22 +152,17 @@ var countFilesActivateButton = function(fade){
     $("#doneUploading b.numfiles").text(rfl)
     if(rfl > 0){
         setTimeout(function(){
-            $("#doneUploading").addClass('visible');
-            if(typeof fade !== 'undefined' && fade){
-                $("#doneUploading").hide().fadeIn('fast')
-            }
+            $("#doneUploading").addClass('visible').show();
         }, 500);
     }else{
-        if(typeof fade !== 'undefined' && fade){
-            $("#doneUploading").removeClass('visible')
-        }else{
-            $("#doneUploading").fadeOut('fast', function(){ $(this).removeClass('visible') });
-        }
+        $("#doneUploading").hide().removeClass('visible')
     }
 }
 
 function isUploading(){
+    $("#doneUploading").hide()
 }
 
 function doneUploading(){
+    $("#doneUploading").show()
 }
