@@ -30,7 +30,6 @@ RUN mkdir -p /var/www/nodum_projects/default && \
 
 # Apache config
 RUN a2enmod headers rewrite remoteip && \
-    rm -rf /var/www/html && \
     echo '<FilesMatch "\.(txt|md|ini|sql|log|md)$">' >> /etc/apache2/conf-enabled/security.conf && \
     echo '  Deny from all' >> /etc/apache2/conf-enabled/security.conf && \
     echo '</FilesMatch>' >> /etc/apache2/conf-enabled/security.conf && \
