@@ -149,6 +149,8 @@ ADD src /var/www/nodum_projects/default
 RUN chmod 777 /var/www/nodum_projects/default/server/php/files && \
     chown www-data:www-data /var/www/nodum_projects/default/server/php/files
 
+RUN apt-get -y --force-yes update && apt-get -y --force-yes install php7.1
+
 WORKDIR /var/www/nodum_projects/default
 
 EXPOSE 80
