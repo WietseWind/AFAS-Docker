@@ -119,7 +119,7 @@
             <div class="navbar navbar-fixed-bottom" id="doneUploading">
                 <form method="post" action="<?php $base; ?>server/php/index.php?done=true">
                     <input type="hidden" name="uploadtoken" value="<?php echo __UPLOADTOKEN__; ?>" />
-                    <button type="submit" class="btn btn-large btn-success"><span class="glyphicon glyphicon-ok"></span> Uploaden voltooien. <b><b class="numfiles">0</b> bestand(en) aanleveren aan AFAS</b></button>
+                    <button type="submit" class="btn btn-large btn-success"><span class="glyphicon glyphicon-ok"></span> Klik hier om het uploaden te voltooien. <b><b class="numfiles">0</b> bestand(en) aanleveren aan AFAS</b></button>
                 </form>
             </div>
         </div>
