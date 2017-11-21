@@ -34,6 +34,7 @@ $(function () {
         maxChunkSize: 5000000,
         autoUpload  : true,
         url         : $backendUrl,
+        acceptFileTypes: /\.(zip|rar|7z)/,
 
         add: function (e, data) {
             var that = this;
@@ -55,6 +56,7 @@ $(function () {
          drop : function(e){
             $("#overlay-dropper").removeClass('goAnimate');
             $("#doneUploading").removeClass('visible').hide()
+            countFilesActivateButton()
             return;
          },
          submit : function(e, data){
@@ -148,7 +150,7 @@ $(function () {
 });
 
 var countFilesActivateButton = function(fade){
-    var rfl = $('p.name').length
+    var rfl = $('p.name').length - $('td>strong.error.text-danger').length
     $("#doneUploading b.numfiles").text(rfl)
     if(rfl > 0){
         setTimeout(function(){
