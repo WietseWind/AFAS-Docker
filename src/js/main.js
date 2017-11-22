@@ -34,7 +34,7 @@ $(function () {
         maxChunkSize: 5000000,
         autoUpload  : true,
         url         : $backendUrl,
-        acceptFileTypes: /\.(zip|rar|7z)/,
+        acceptFileTypes: /\.(zip|rar|7z|sup)/i,
 
         add: function (e, data) {
             var that = this;
