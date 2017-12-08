@@ -138,8 +138,9 @@ RUN sed -i "s/session\.cache_expire.*/session.cache_expire = 18000000/g" /etc/ph
     sed -i "s/.*date\.timezone.*=.*/date.timezone = Europe\/Amsterdam/g" /etc/php/7.0/apache2/php.ini && \
     sed -i "s/^expose_php.\+/expose_php = Off/g" /etc/php/7.0/apache2/php.ini && \
     sed -i "s/^max_execution_time.\+/max_execution_time = 600/g" /etc/php/7.0/apache2/php.ini && \
-    sed -i "s/.*upload_max_filesize.\+/upload_max_filesize = 400G/g" /etc/php/7.0/apache2/php.ini && \
-    sed -i "s/^post_max_size.\+/post_max_size = 400G/g" /etc/php/7.0/apache2/php.ini && \
+    sed -i "s/.*upload_max_filesize.\+/upload_max_filesize = 0/g" /etc/php/7.0/apache2/php.ini && \
+    sed -i "s/.*max_file_uploads.\+/max_file_uploads = 1000/g" /etc/php/7.0/apache2/php.ini && \
+    sed -i "s/.*post_max_size.\+/post_max_size = 40M/g" /etc/php/7.0/apache2/php.ini && \
     sed -i "s/^memory_limit.\+/memory_limit = 0/g" /etc/php/7.0/apache2/php.ini && \
     sed -i "s/^short_open_tag.\+/short_open_tag = On/g" /etc/php/7.0/apache2/php.ini && \
     sed -i "s/^display_errors.\+/display_errors = Off/g" /etc/php/7.0/apache2/php.ini && \
