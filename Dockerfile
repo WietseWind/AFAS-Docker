@@ -4,7 +4,7 @@ MAINTAINER Wietse Wind <w.wind@ipublications.net>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PHPREPO http://ppa.launchpad.net/ondrej/php/ubuntu/pool/main/p/php7.0
-ENV PHPBUILD 7.0.25-1+ubuntu14.04.1+deb.sury.org+1
+ENV PHPBUILD 7.0.30-1+ubuntu14.04.1+deb.sury.org+1
 
 
 RUN echo "debconf debconf/frontend select Noninteractive" | debconf-set-selections
@@ -70,7 +70,7 @@ RUN echo '<VirtualHost *:80>' > /etc/apache2/sites-available/000-default.conf &&
 
 # Install main packages
 RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php -y && \
-    apt-get -y --force-yes install expect build-essential libpcre3 libpcre3-dev libpcrecpp0 libcurl4-openssl-dev pkg-config libmcrypt4 && \
+    apt-get -y --force-yes install expect build-essential libcurl4-openssl-dev pkg-config libmcrypt4 && \
     apt-get -y --force-yes update && \
     apt-get -y --force-yes install php-common libssl1.1 libgd3 libxslt1.1
 
@@ -91,6 +91,16 @@ RUN cd /tmp && mkdir php && cd php && \
     wget $PHPREPO/php7.0-dev_${PHPBUILD}_amd64.deb && \
     wget $PHPREPO/php7.0-xml_${PHPBUILD}_amd64.deb && \
     wget $PHPREPO/php7.0_${PHPBUILD}_all.deb && \
+    wget http://ppa.launchpad.net/ondrej/php/ubuntu/pool/main/p/pcre3/libpcre3_8.41-4+ubuntu14.04.1+deb.sury.org+1_amd64.deb && \
+    wget http://ppa.launchpad.net/ondrej/php/ubuntu/pool/main/p/pcre3/libpcrecpp0_8.41-4+ubuntu14.04.1+deb.sury.org+1_amd64.deb && \
+    wget http://ppa.launchpad.net/ondrej/php/ubuntu/pool/main/p/pcre3/libpcre3-dev_8.41-4+ubuntu14.04.1+deb.sury.org+1_amd64.deb && \
+    wget http://ppa.launchpad.net/ondrej/php/ubuntu/pool/main/p/pcre3/libpcre16-3_8.41-4+ubuntu14.04.1+deb.sury.org+1_amd64.deb && \
+    wget http://ppa.launchpad.net/ondrej/php/ubuntu/pool/main/p/pcre3/libpcre32-3_8.41-4+ubuntu14.04.1+deb.sury.org+1_amd64.deb	 && \
+    dpkg -i libpcre16-3_8.41-4+ubuntu14.04.1+deb.sury.org+1_amd64.deb && \
+    dpkg -i libpcre32-3_8.41-4+ubuntu14.04.1+deb.sury.org+1_amd64.deb	 && \
+    dpkg -i libpcre3_8.41-4+ubuntu14.04.1+deb.sury.org+1_amd64.deb && \
+    dpkg -i libpcrecpp0_8.41-4+ubuntu14.04.1+deb.sury.org+1_amd64.deb && \
+    dpkg -i libpcre3-dev_8.41-4+ubuntu14.04.1+deb.sury.org+1_amd64.deb && \
     dpkg -i php7.0-common_${PHPBUILD}_amd64.deb && \
     dpkg -i php7.0-json_${PHPBUILD}_amd64.deb && \
     dpkg -i php7.0-gd_${PHPBUILD}_amd64.deb && \
