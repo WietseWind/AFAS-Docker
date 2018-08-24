@@ -41,6 +41,8 @@ class UploadHandler {
     protected $image_objects = array();
 
     function __construct($options = null, $initialize = true, $error_messages = null) {
+        $cookie_settings = session_get_cookie_params();
+        @session_set_cookie_params (@$cookie_settings['lifetime'], @$cookie_settings['path'], @$cookie_settings['domain'], true /*secure*/, true /*httponly*/ );
         @session_start();
 
         $this->response = array();

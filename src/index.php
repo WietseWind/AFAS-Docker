@@ -53,7 +53,8 @@
 </head>
 <body>
     <?php
-
+        $cookie_settings = session_get_cookie_params();
+        @session_set_cookie_params (@$cookie_settings['lifetime'], @$cookie_settings['path'], @$cookie_settings['domain'], true /*secure*/, true /*httponly*/ );
         @session_start();
         $ssid = @session_id();
         if(!empty($ssid)){
