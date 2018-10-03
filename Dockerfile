@@ -1,28 +1,28 @@
-FROM ubuntu:14.04
+FROM ubuntu:18.04
 
 MAINTAINER Wietse Wind <w.wind@ipublications.net>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PHPREPO http://ppa.launchpad.net/ondrej/php/ubuntu/pool/main/p/php7.0
-ENV PHPBUILD 7.0.30-1+ubuntu14.04.1+deb.sury.org+1
+ENV PHPBUILD 7.0.32-1+ubuntu18.04.1+deb.sury.org+1
 
 
 RUN echo "debconf debconf/frontend select Noninteractive" | debconf-set-selections
 RUN sed -i "s/http:\/\/archive.ubuntu.com\//http:\/\/mirror.transip.net\/ubuntu\//g" /etc/apt/sources.list && \
-    apt-get -y --force-yes update
+    apt-get -y  update
 
 ENV LANGUAGE C.UTF-8
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
 # Configure timezone and locale
-RUN export LANGUAGE=C.UTF-8; export LANG=C.UTF-8; export LC_ALL=C.UTF-8; locale-gen C.UTF-8; DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales; echo "Europe/Amsterdam" > /etc/timezone; dpkg-reconfigure -f noninteractive tzdata
-
 # Install main packages
-RUN apt-get -y --force-yes install nano supervisor htop wget curl git lynx locales python-software-properties software-properties-common && \
-    apt-get -y --force-yes update && \
-    apt-get -y --force-yes upgrade && \
-    apt-get -y --force-yes install apache2 apache2-bin apache2-data ssl-cert
+RUN apt-get -y  install locales tzdata nano libssl-dev supervisor htop wget curl git lynx locales software-properties-common && \
+    apt-get -y  update && \
+    apt-get -y  upgrade && \
+    apt-get -y  install apache2 apache2-bin apache2-data ssl-cert
+
+RUN export LANGUAGE=C.UTF-8; export LANG=C.UTF-8; export LC_ALL=C.UTF-8; locale-gen C.UTF-8; DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales; echo "Europe/Amsterdam" > /etc/timezone; dpkg-reconfigure -f noninteractive tzdata
 
 RUN mkdir -p /var/www/nodum_projects/default && \
     chown -R www-data:root /var/www/nodum_projects && \
@@ -70,13 +70,13 @@ RUN echo '<VirtualHost *:80>' > /etc/apache2/sites-available/000-default.conf &&
 
 # Install main packages
 RUN LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php -y && \
-    apt-get -y --force-yes install expect build-essential libcurl4-openssl-dev pkg-config libmcrypt4 && \
-    apt-get -y --force-yes update && \
-    apt-get -y --force-yes install php-common libssl1.1 libgd3 libxslt1.1
+    apt-get -y  install expect build-essential libcurl4-openssl-dev pkg-config libmcrypt4 && \
+    apt-get -y  update && \
+    apt-get -y  install php-common libssl1.1 libgd3 libxslt1.1
 
 # Install PHP7.0
 RUN cd /tmp && mkdir php && cd php && \
-    apt-get -y --force-yes install libsigsegv2 m4 autotools-dev libltdl-dev build-essential autoconf automake shtool libtool && \
+    apt-get -y  install libsigsegv2 m4 autotools-dev libltdl-dev build-essential autoconf automake shtool libtool && \
     wget $PHPREPO/php7.0-common_${PHPBUILD}_amd64.deb && \
     wget $PHPREPO/php7.0-json_${PHPBUILD}_amd64.deb && \
     wget $PHPREPO/php7.0-gd_${PHPBUILD}_amd64.deb && \
@@ -115,10 +115,10 @@ RUN cd /tmp && mkdir php && cd php && \
     dpkg -i php7.0-dev_${PHPBUILD}_amd64.deb && \
     dpkg -i php7.0-xml_${PHPBUILD}_amd64.deb && \
     dpkg -i php7.0_${PHPBUILD}_all.deb && \
-    apt-get -y --force-yes install php7.0-dev=${PHPBUILD} php7.0-mysql=${PHPBUILD} php7.0-opcache=${PHPBUILD} php7.0-curl=${PHPBUILD} php7.0-gd=${PHPBUILD} php7.0-common=${PHPBUILD} php7.0-ldap=${PHPBUILD} php7.0-sqlite3=${PHPBUILD} php7.0-json=${PHPBUILD} php7.0=${PHPBUILD} libapache2-mod-php7.0=${PHPBUILD} php7.0-cli=${PHPBUILD} php7.0-xml=${PHPBUILD} php-xml && \
+    apt-get -y  install php7.0-dev=${PHPBUILD} php7.0-mysql=${PHPBUILD} php7.0-opcache=${PHPBUILD} php7.0-curl=${PHPBUILD} php7.0-gd=${PHPBUILD} php7.0-common=${PHPBUILD} php7.0-ldap=${PHPBUILD} php7.0-sqlite3=${PHPBUILD} php7.0-json=${PHPBUILD} php7.0=${PHPBUILD} libapache2-mod-php7.0=${PHPBUILD} php7.0-cli=${PHPBUILD} php7.0-xml=${PHPBUILD} php-xml && \
     rm *.deb && \
     chmod -R 777 /var/lib/php/sessions/ && \
-    apt-get -y --force-yes purge && apt-get -y --force-yes clean && apt-get -y --force-yes autoclean && apt-get -y --force-yes autoremove && \
+    apt-get -y  purge && apt-get -y  clean && apt-get -y  autoclean && apt-get -y  autoremove && \
     rm -rf /var/lib/apt/lists/* /tmp/*
 
 # Install MongoDB Driver
@@ -161,7 +161,7 @@ ADD src /var/www/nodum_projects/default
 RUN chmod 777 /var/www/nodum_projects/default/server/php/files && \
     chown www-data:www-data /var/www/nodum_projects/default/server/php/files
 
-RUN apt-get -y --force-yes update && apt-get -y --force-yes install php7.1
+RUN apt-get -y  update && apt-get -y  install php7.1
 
 WORKDIR /var/www/nodum_projects/default
 
