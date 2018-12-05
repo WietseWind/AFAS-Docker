@@ -4,7 +4,7 @@ MAINTAINER Wietse Wind <w.wind@ipublications.net>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV PHPREPO http://ppa.launchpad.net/ondrej/php/ubuntu/pool/main/p/php7.0
-ENV PHPBUILD 7.0.32-1+ubuntu18.04.1+deb.sury.org+1
+ENV PHPBUILD 7.0.32-4+ubuntu18.04.1+deb.sury.org+1
 
 
 RUN echo "debconf debconf/frontend select Noninteractive" | debconf-set-selections

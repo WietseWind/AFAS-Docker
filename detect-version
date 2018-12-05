@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+curl --silent http://ppa.launchpad.net/ondrej/php/ubuntu/pool/main/p/php7.0/|grep 'ubuntu18.04.1'|grep libapache2|cut -d '"' -f 8|cut -d "_" -f 2|uniq
+
