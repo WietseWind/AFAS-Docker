@@ -323,6 +323,7 @@ class UploadHandler {
             $file->size = $this->get_file_size(
                 $this->get_upload_path($file_name)
             );
+            $file->hash = md5_file($this->get_upload_path($file_name));
             $file->url = $this->get_download_url($file->name);
             foreach($this->options['image_versions'] as $version => $options) {
                 if (!empty($version)) {
