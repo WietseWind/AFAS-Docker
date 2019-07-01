@@ -33,7 +33,7 @@ if(isset($_GET["done"]) && isset($_POST['uploadtoken'])){
         $files = [];
         try {
             $files = array_map(function($a){
-                return ['name'=>$a->name,'size'=>$a->size,'url'=>$a->url];
+                return ['name'=>$a->name,'size'=>$a->size,'url'=>$a->url,'hash'=>@$a->hash];
             }, $upload_handler->get_file_objects());
         }
         catch (\Exception $e){
